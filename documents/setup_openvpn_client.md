@@ -18,7 +18,7 @@ mkdir -p ~/client-configs/keys
 * ca 인증서, 클라이언트 인증서 복사
 ```bash
 CLIENT_NAME=client1
-sudo cp /home/ssm-user/easy-rsa/pki/ca.crt ~/client-configs/keys/
+cp /home/ssm-user/easy-rsa/pki/ca.crt ~/client-configs/keys/
 cp ~/easy-rsa/pki/private/$CLIENT_NAME.key ~/client-configs/keys/
 cp ~/easy-rsa/pki/issued/$CLIENT_NAME.crt ~/client-configs/keys/
 ```
