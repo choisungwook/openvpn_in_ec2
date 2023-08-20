@@ -1,19 +1,23 @@
-# 개요
+# 1. 개요
 * openvpn client 설정파일 생성
 * client 설정파일은 쉘 스크립트로 생성합니다.
 * 쉘 스크립트를 실행하기 위해 인증서 등이 필요합니다.
 
-# 전제조건
+# 2. 전제조건
 * ca 인증서, client 인증서, client private key가 있어야 함
     * [생성 메뉴얼 바로가기](./issue_certificate.md)
+* 무결성에 사용하는 ta.key 생성
+    * [생성 메뉴얼 바로가기](./setup_openvpn.md)
 
-# 준비
+# 3. 준비
 * 디렉터리 생성
 ```bash
+mkdir ~/client-configs
 mkdir -p ~/client-configs/keys
+mkdir -p ~/client-configs/files
 ```
 
-* ca 인증서, 클라이언트 인증서 복사
+## 3.1 ca 인증서, 클라이언트 인증서 복사
 ```bash
 CLIENT_NAME=client1
 cp ~/easy-rsa/pki/ca.crt ~/client-configs/keys/
@@ -21,37 +25,24 @@ cp ~/easy-rsa/pki/private/$CLIENT_NAME.key ~/client-configs/keys/
 cp ~/easy-rsa/pki/issued/$CLIENT_NAME.crt ~/client-configs/keys/
 ```
 
-* 예제 클라이언트 설정 파일 복사
+## 3.2 ta.key 복사
 ```bash
-cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ~/client-configs/base.conf
+sudo cp /etc/openvpn/server/ta.key ~/client-configs/keys/ta.key
+chmod 755 ~/client-configs/keys/ta.key
 ```
 
-* 클라이언트 설정 파일 수정
-```conf
-# openvpn 서버 주소
-remote {openvpn ec2_instance public ip} 1194
-
-# 인증서 경로
-ca.crt
-client1.crt
-client1.key
-
-# 인증서 암호 알고리즘 설정
-auth SHA256
-cipher AES-256-GCM
-
-# key-direction 1
-key-direction 1
-
-# tls-crypt 주석
-;tls-auth ta.key 1
-
-# openvpn실행 최소권한
-user nobody
-group nogroup
+## 3.3 클라이언트 설정 파일 복사
+* [클라이언트 설정 파일을](./client.conf)을 ~/client-configs/client.conf에 복사
+```bash
+vi /etc/openvpn/server/server.conf
 ```
 
-# client 설정파일 생성 스크립트 생성
+* client.conf에서 remote 주소를 openvpn ec2 instance pulbic ip로 변경
+```bash
+43줄 remote 52.78.120.108 1194
+```
+
+# 4. client 설정파일 생성 스크립트 생성
 * 작업 디렉터리 이동
 ```bash
 cd ~/client-configs
@@ -65,9 +56,12 @@ vi make_config.sh
 ```bash
 #!/bin/bash
 # First argument: Client identifier
+
+set -e
+
 KEY_DIR=~/client-configs/keys
-OUTPUT_DIR=~/client-configs/
-BASE_CONFIG=~/client-configs/base.conf
+OUTPUT_DIR=~/client-configs/files
+BASE_CONFIG=~/client-configs/client.conf
 
 cat ${BASE_CONFIG} \
     <(echo -e '<ca>') \
@@ -76,14 +70,15 @@ cat ${BASE_CONFIG} \
     ${KEY_DIR}/${1}.crt \
     <(echo -e '</cert>\n<key>') \
     ${KEY_DIR}/${1}.key \
-    <(echo -e '</key>\n') \
-    > ${OUTPUT_DIR}/${1}.ovpn
+    <(echo -e '</key>\n<tls-crypt>') \
+    ${KEY_DIR}/ta.key \
+    <(echo -e '</tls-crypt>') \    > ${OUTPUT_DIR}/${1}.ovpn
 ```
 
-# client 설정파일 생성 스크립트 실행
+# 5. client 설정파일 생성 스크립트 실행
 ```bash
 cd ~/client-configs
-chmod 700 ~/client-configs/make_config.sh
+chmod u+x ~/client-configs/make_config.sh
 ```
 
 ```bash
