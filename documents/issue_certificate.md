@@ -46,7 +46,7 @@ ls ~/easy-rsa/pki/ca.crt
 # 인증서 확인
 ls ~/easy-rsa/pki/issued/
 ls ~/easy-rsa/pki/private/
-openssl x509 -in ~/easy-rsa/pki/{서버 도메인}.crt -text -noout
+openssl x509 -in ~/easy-rsa/pki/issued/{서버 도메인}.crt -text -noout
 ```
 
 # 클라이언트 인증서 생성
