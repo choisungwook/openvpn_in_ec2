@@ -41,7 +41,7 @@ sudo vi /etc/openvpn/server/server.conf
 * server.conf는 기본 설정만 되어 있으므로 실무에 적용할 떄는 파라미터를 적절히 수정해주세요.
 ```bash
 예) openvpn 라우팅 설정
-142줄 push "route 192.168.170.39 255.255.255.0"
+142줄 push "route 192.168.170.0 255.255.255.0"
 143줄 push "route 192.168.140.0 255.255.255.0"
 ```
 
