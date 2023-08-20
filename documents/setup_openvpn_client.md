@@ -6,8 +6,6 @@
 # 전제조건
 * ca 인증서, client 인증서, client private key가 있어야 함
     * [생성 메뉴얼 바로가기](./issue_certificate.md)
-* ta.key 생성
-    * [생성 메뉴얼 바로가기](./setup_openvpn.md)
 
 # 준비
 * 디렉터리 생성
@@ -23,11 +21,6 @@ cp ~/easy-rsa/pki/private/$CLIENT_NAME.key ~/client-configs/keys/
 cp ~/easy-rsa/pki/issued/$CLIENT_NAME.crt ~/client-configs/keys/
 ```
 
-* ta.key 복사
-```bash
-sudo cp /etc/openvpn/server/ta.key ~/client-configs/keys
-```
-
 * 예제 클라이언트 설정 파일 복사
 ```bash
 cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ~/client-configs/base.conf
@@ -35,16 +28,23 @@ cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ~/client-conf
 
 * 클라이언트 설정 파일 수정
 ```conf
+# openvpn 서버 주소
+remote {openvpn ec2_instance public ip} 1194
+
 # 인증서 경로
 ca.crt
 client.crt
 client.key
 
 # 인증서 암호 알고리즘 설정
+auth SHA256
 cipher AES-256-GCM
 
-# 무결성 설정
-tls-crypt ta.key
+# key-direction 1
+key-direction 1
+
+# tls-crypt 주석
+;tls-auth ta.key 1
 
 # openvpn실행 최소권한
 user nobody
@@ -76,9 +76,6 @@ cat ${BASE_CONFIG} \
     ${KEY_DIR}/${1}.crt \
     <(echo -e '</cert>\n<key>') \
     ${KEY_DIR}/${1}.key \
-    <(echo -e '</key>\n<tls-crypt>') \
-    ${KEY_DIR}/ta.key \
-    <(echo -e '</tls-crypt>') \
     > ${OUTPUT_DIR}/${1}.ovpn
 ```
 
