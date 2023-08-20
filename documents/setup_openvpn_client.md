@@ -72,7 +72,8 @@ cat ${BASE_CONFIG} \
     ${KEY_DIR}/${1}.key \
     <(echo -e '</key>\n<tls-crypt>') \
     ${KEY_DIR}/ta.key \
-    <(echo -e '</tls-crypt>') \    > ${OUTPUT_DIR}/${1}.ovpn
+    <(echo -e '</tls-crypt>') \
+    > ${OUTPUT_DIR}/${1}.ovpn
 ```
 
 # 5. client 설정파일 생성 스크립트 실행
