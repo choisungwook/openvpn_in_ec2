@@ -19,11 +19,21 @@ ip -c route
 push "route 192.168.140.0 255.255.255.0"
 ```
 
+* openvpn 재시작
+```bash
+sudo systemctl start openvpn-server@server.service
+```
+
 
 3. aws private subnet에 nginx가 실행되고 있습니다. openvpn을 어떻게 설정해야 client가 nginx에 접근이 가능할까요?
 * openvpn server.conf에서 aws private subnet 라우팅 규칙을 추가합니다.
 ```conf
 push "route 192.168.170.0 255.255.255.0"
+```
+
+* openvpn 재시작
+```bash
+sudo systemctl start openvpn-server@server.service
 ```
 
 * 그리고 openvpn ec2 instance에서 iptaebls규칙을 추가합니다.
