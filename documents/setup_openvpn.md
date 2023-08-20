@@ -10,9 +10,11 @@
 
 
 # openvpn 설정 방법
-* server 인증서 복사
+* ca 인증서, server 인증서, 키 복사
 ```bash
+sudo cp /home/ssm-user/easy-rsa/pki/ca.crt /etc/openvpn/server/
 sudo cp /home/ssm-user/easy-rsa/pki/issued/server.crt /etc/openvpn/server/
+sudo cp /home/ssm-user/easy-rsa/pki/private/server.key /etc/openvpn/server/
 ```
 
 * dh 파라미터 생성 및 복사
