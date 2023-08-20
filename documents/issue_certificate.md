@@ -39,7 +39,7 @@ ls ~/easy-rsa/pki/ca.crt
 # csr 생성
 ./easyrsa gen-req {서버 도메인} nopass
 # csr 승인
-./easyrsa sign-req {서버 도메인} server
+./easyrsa sign-req server {서버 도메인}
 ```
 
 ```bash
@@ -54,7 +54,7 @@ openssl x509 -in ~/easy-rsa/pki/issued/{서버 도메인}.crt -text -noout
 # csr 생성
 ./easyrsa gen-req {클라이언트 이름} nopass
 # csr 승인
-./easyrsa sign-req {클라이언트 이름} client
+./easyrsa sign-req client {클라이언트 이름}
 ```
 
 ```bash
