@@ -5,7 +5,7 @@
 * [문서 링크](./connect_openvpn_ec2_instance.md)
 
 # 전제조건
-* server 인증서가 있어야 함
+* ca 인증서, server 인증서, server private key가 있어야 함
   * [생성 메뉴얼 바로가기](./issue_certificate.md)
 
 
