@@ -29,6 +29,9 @@ terraform output
 
 4. aws private subnet에 있는 nginx 호출
 
+# 연습문제
+* [연습문제 링크](./questions/)
+
 # 예제 삭제 방법
 ```bash
 cd terraform
