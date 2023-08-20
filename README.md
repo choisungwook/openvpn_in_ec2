@@ -27,10 +27,7 @@ terraform output
 
 3. 자신 PC에서 openvpn client다운로드 받고 실행
 
-4. aws private subnet에 있는 nginx 호출
-
-# 연습문제
-* [연습문제 링크](./questions/)
+4. [연습문제](./questions/) 풀이
 
 # 예제 삭제 방법
 ```bash
