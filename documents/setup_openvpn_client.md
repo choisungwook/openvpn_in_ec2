@@ -33,8 +33,8 @@ remote {openvpn ec2_instance public ip} 1194
 
 # 인증서 경로
 ca.crt
-client.crt
-client.key
+client1.crt
+client1.key
 
 # 인증서 암호 알고리즘 설정
 auth SHA256
