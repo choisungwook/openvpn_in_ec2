@@ -40,6 +40,9 @@ sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/ope
 * server.conf 설정
 ```conf
 # 인증서 경로
+ca.crt
+server.crt
+server.key
 
 # dh 파라미터 경로
 dh dh.pem
