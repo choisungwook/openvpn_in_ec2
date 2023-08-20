@@ -13,7 +13,7 @@ ip -c route
 
 ![](./imgs/answer_1.png)
 
-# 2. aws public subnet에 nginx가 실행되고 있습니다. openvpn을 어떻게 설정해야 client가 nginx에 접근이 가능할까요?
+# 2. aws public subnet에 nginx가 실행되고 있습니다. openvpn을 어떻게 설정해야 client가 nginx private IP에 접근이 가능할까요?
 * openvpn server.conf에서 aws public subnet 라우팅 규칙을 추가합니다.
 ```conf
 push "route 192.168.140.0 255.255.255.0"
