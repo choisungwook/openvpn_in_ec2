@@ -49,6 +49,7 @@ dh dh.pem
 
 # 인증서 암호 알고리즘 설정
 cipher AES-256-GCM
+auth SHA256
 
 # 무결성 설정
 tls-crypt ta.key
