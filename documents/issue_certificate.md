@@ -54,7 +54,7 @@ openssl x509 -in ~/easy-rsa/pki/ca.crt -text -noout
 # csr 생성
 ./easyrsa gen-req {클라이언트 이름} nopass
 # csr 승인
-./easyrsa sign-req {클라이언트 이름} server
+./easyrsa sign-req {클라이언트 이름} client
 ```
 
 ```bash
