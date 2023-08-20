@@ -18,8 +18,9 @@ sudo cp /home/ssm-user/easy-rsa/pki/issued/server.crt /etc/openvpn/server/
 * dh 파라미터 생성 및 복사
 > 암호화 통신에 사용
 ```bash
+cd ~/easy-rsa
 ./easyrsa gen-dh
-cp ./dh /etc/openvpn/server/
+sudo cp ./pki/dh.pem /etc/openvpn/server/
 ```
 
 * ta.key 생성
@@ -39,7 +40,7 @@ sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/ope
 # 인증서 경로
 
 # dh 파라미터 경로
-dh dh2048.pem
+dh dh.pem
 
 # 인증서 암호 알고리즘 설정
 cipher AES-256-GCM
