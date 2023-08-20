@@ -21,7 +21,7 @@ push "route 192.168.140.0 255.255.255.0"
 
 * openvpn 재시작
 ```bash
-sudo systemctl start openvpn-server@server.service
+sudo systemctl restart openvpn-server@server.service
 ```
 
 
@@ -33,7 +33,7 @@ push "route 192.168.170.0 255.255.255.0"
 
 * openvpn 재시작
 ```bash
-sudo systemctl start openvpn-server@server.service
+sudo systemctl restart openvpn-server@server.service
 ```
 
 * 그리고 openvpn ec2 instance에서 iptaebls규칙을 추가합니다.
