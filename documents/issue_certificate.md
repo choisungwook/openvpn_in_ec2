@@ -1,5 +1,5 @@
 # 개요
-* openvpn ca, server, client 인증서 생성
+* easy-rsa명령어를 사용하여 openvpn ca, server, client 인증서 생성
 
 # openVPN EC2 instance접속 방법
 * [문서 링크](./connect_openvpn_ec2_instance.md)
