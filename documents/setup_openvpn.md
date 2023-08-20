@@ -1,23 +1,23 @@
-# 개요
-* openvpn 설정
+# 1. 개요
+* openvpn server 설정
 
-# openVPN EC2 instance접속 방법
+# 2. openVPN EC2 instance접속 방법
 * [문서 링크](./connect_openvpn_ec2_instance.md)
 
-# 전제조건
+# 3. 전제조건
 * ca 인증서, server 인증서, server private key가 있어야 함
   * [생성 메뉴얼 바로가기](./issue_certificate.md)
 
 
-# openvpn 설정 방법
-* ca 인증서, server 인증서, 키 복사
+# 4. openvpn 설정 방법
+## 4.1 ca 인증서, server 인증서, 키 복사
 ```bash
 sudo cp /home/ssm-user/easy-rsa/pki/ca.crt /etc/openvpn/server/
 sudo cp /home/ssm-user/easy-rsa/pki/issued/server.crt /etc/openvpn/server/
 sudo cp /home/ssm-user/easy-rsa/pki/private/server.key /etc/openvpn/server/
 ```
 
-* dh 파라미터 생성 및 복사
+## 4.2 dh 파라미터 생성 및 복사
 > 암호화 통신에 사용
 ```bash
 cd ~/easy-rsa
@@ -25,41 +25,27 @@ cd ~/easy-rsa
 sudo cp ./pki/dh.pem /etc/openvpn/server/
 ```
 
-* ta.key 생성
+## 4.3 ta.key 생성
 > HMAC 무결성 검증에 사용
 ```bash
 cd /etc/openvpn/server
 sudo openvpn --genkey secret ta.key
 ```
 
-* 디폴트 설정 복사
+## 4.4 server.conf 파일 복사
+* [server.conf파일](./server.conf)을 /etc/openvpn/server/server.conf경로에 복사
 ```bash
-sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/server/server.conf
+sudo vi /etc/openvpn/server/server.conf
 ```
 
-* server.conf 설정
-```conf
-# 인증서 경로
-ca.crt
-server.crt
-server.key
-
-# dh 파라미터 경로
-dh dh.pem
-
-# 인증서 암호 알고리즘 설정
-cipher AES-256-GCM
-auth SHA256
-
-# 무결성 설정
-tls-crypt ta.key
-
-# openvpn실행 최소권한
-user nobody
-group nogroup
+* server.conf는 기본 설정만 되어 있으므로 실무에 적용할 떄는 파라미터를 적절히 수정해주세요.
+```bash
+예) openvpn 라우팅 설정
+142줄 push "route 192.168.170.39 255.255.255.0"
+143줄 push "route 192.168.140.0 255.255.255.0"
 ```
 
-# 커널 파라미터 수정
+# 5. 커널 파라미터 수정
 * 트래픽을 라우팅(포워딩)하기 위해 커널 파라미터 수정
 ```bash
 sudo vi /etc/sysctl.conf
@@ -73,13 +59,18 @@ sudo sysctl -p
 net.ipv4.ip_forward = 1
 ```
 
-# openvpn 실행
+# 6. openvpn 실행
 ```bash
+# 실행
 sudo systemctl start openvpn-server@server.service
+
+# 상태확인
 sudo systemctl status openvpn-server@server.service
 
+# 영구실행 설정
 sudo systemctl -f enable openvpn-server@server.service
 ```
 
-# 참고자료
+# 7. 참고자료
 * https://www.digitalocean.com/community/tutorials/how-to-set-up-and-configure-an-openvpn-server-on-ubuntu-20-04
+* https://hiteit.tistory.com/5
